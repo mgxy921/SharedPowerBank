@@ -23,7 +23,7 @@ def ExecuteCommand(conn):
     # print(Woshi.CommandList)
     if len(Woshi.CommandList) == 0:
         # print('commandlist lenth is 0')
-        return 'commandlist lenth is 0'
+        return 0,'commandlist lenth is 0'
     
     
     for comm in Woshi.CommandList:
@@ -38,6 +38,7 @@ def ExecuteCommand(conn):
             
             # 如果是强制弹出命令
         if comm[2] == b'\x80':
+            print('ExecuteCommand','强制弹出命令')
             
             # 命令长度
             PacketLen = b'\x08'
@@ -59,7 +60,7 @@ def ExecuteCommand(conn):
             
             print('command:',command)
             
-            conn.sendall(command)
+            conn.send(command)
             print('强制弹出充电宝')
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
@@ -68,6 +69,7 @@ def ExecuteCommand(conn):
         # 查询机柜软件版本号
         elif comm[2] == b'\x62':
             # 查询机柜软件版本号
+            print('ExecuteCommand','查询机柜软件版本号')
             
             # 命令长度
             PacketLen = b'\x07'
@@ -82,18 +84,20 @@ def ExecuteCommand(conn):
             
             print('command:',command)
             
-            conn.sendall(command)
+            conn.send(command)
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
         
         # 设置服务器地址
         elif comm[2] == b'\x63':
+            print('ExecuteCommand','设置服务器地址')
             
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
         
         #查询机柜库存
         elif comm[2] == b'\x64':
+            print('ExecuteCommand','查询机柜库存')
             
             # 命令长度
             PacketLen = b'\x07'
@@ -106,7 +110,7 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
             
-            conn.sendall(command)
+            conn.send(command)
             
             
             Woshi.CommandList.remove(comm)
@@ -114,6 +118,7 @@ def ExecuteCommand(conn):
             
         # 借充电宝
         elif comm[2] == b'\x65':
+            print('ExecuteCommand','借充电宝')
             
             # 命令长度
             PacketLen = b'\x07'
@@ -126,7 +131,7 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
             
-            conn.sendall(command)
+            conn.send(command)
             
             
             Woshi.CommandList.remove(comm)
@@ -134,6 +139,7 @@ def ExecuteCommand(conn):
             
         #还充电宝
         elif comm[2] == b'\x66':
+            print('ExecuteCommand','还充电宝')
             
             # 命令长度
             PacketLen = b'\x09'
@@ -157,7 +163,7 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Slot + Result
             
-            conn.sendall(command)
+            conn.send(command)
             print(command)
             
             # 命令执行完要删除此命令
@@ -166,6 +172,8 @@ def ExecuteCommand(conn):
             
         # 远程重启机柜
         elif comm[2] == b'\x67':
+            print('ExecuteCommand','远程重启机柜')
+            
             # 命令长度
             PacketLen = b'\x07'
             # 版本
@@ -184,11 +192,14 @@ def ExecuteCommand(conn):
             
         # 远程升级
         elif comm[2] == b'\x68':
+            print('ExecuteCommand','远程升级')
             
             return comm[0],'success'
         
         # 查询ICCID
         elif comm[2] == b'\x69':
+            
+            print('ExecuteCommand','查询ICCID')
             # 命令长度
             PacketLen = b'\x07'
             # 版本
@@ -207,14 +218,14 @@ def ExecuteCommand(conn):
         
         # 查询服务器地址
         elif comm[2] == b'\x6A':
-            
+            print('ExecuteCommand','查询服务器地址')
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
         
         #查询机柜语音播报音量
         elif comm[2] == b'\x77':
-            
+            print('ExecuteCommand','查询机柜语音播报音量')
             # 命令长度
             PacketLen = b'\x08'
             # 版本
@@ -233,7 +244,7 @@ def ExecuteCommand(conn):
         
         # 设置机柜语音播报音量
         elif comm[2] == b'\x70':
-            
+            print('ExecuteCommand','设置机柜语音播报音量')
             # 命令长度
             PacketLen = b'\x08'
             # 版本
@@ -253,7 +264,7 @@ def ExecuteCommand(conn):
             
         # 查询机柜网络信息
         elif comm[2] == b'\x72':
-            
+            print('ExecuteCommand','查询机柜网络信息')
             # 命令长度
             PacketLen = b'\x07'
             # 版本
@@ -270,4 +281,4 @@ def ExecuteCommand(conn):
             return comm[0],'success'
             
     
-    return 'no command'
+    return 0,'no command'

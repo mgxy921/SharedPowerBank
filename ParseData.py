@@ -50,7 +50,7 @@ def ParseData(self,data,conn,addr,SN):
         
         try:
             conn.send(data)
-            # print('发送心跳包,地址:',addr[0])
+            print('发送心跳包,地址:',addr[0])
             return data[2],'success'
         except:
             # print('发送心跳包失败，地址:'+str(addr[0]))
@@ -79,7 +79,7 @@ def ParseData(self,data,conn,addr,SN):
         # 解析充电宝数据
         powerbankList = Woshi.getpbdata(data)
         
-        # print('0x64:收到机柜库存数据')
+        print('0x64:收到机柜库存数据')
         # 存储机柜库存
         # print(powerbankList)
         return 0x64,powerbankList
