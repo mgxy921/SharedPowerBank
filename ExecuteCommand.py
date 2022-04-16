@@ -28,11 +28,6 @@ def ExecuteCommand(conn):
     
     for comm in Woshi.CommandList:
         command = b''
-        if len(comm) == 0:
-            # print('command lenth is null')
-            Woshi.CommandList.remove(comm)
-            return 0,'command lenth is null'
-
         # 一个线程对应一个机柜连接，如果有这个机柜的命令就执行
         #if comm[0] == SN :
             
@@ -63,7 +58,7 @@ def ExecuteCommand(conn):
             conn.send(command)
             print('强制弹出充电宝')
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
         
         
         # 查询机柜软件版本号
@@ -87,7 +82,7 @@ def ExecuteCommand(conn):
             conn.send(command)
             print(command)
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
         
         # 设置服务器地址
         elif comm[2] == b'\x63':
@@ -103,7 +98,7 @@ def ExecuteCommand(conn):
             Token = b'\x11\x22\x33\x44'
             
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
         
         #查询机柜库存
         elif comm[2] == b'\x64':
@@ -124,7 +119,7 @@ def ExecuteCommand(conn):
             
             print(command)
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
             
         # 借充电宝
         elif comm[2] == b'\x65':
@@ -139,13 +134,14 @@ def ExecuteCommand(conn):
             # 会话令牌
             Token = b'\x11\x22\x33\x44'
             
-            command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
+            slot = bytes([comm[3]])
+            command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + slot
             
             conn.send(command)
             
             print(command)
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
             
         #还充电宝
         elif comm[2] == b'\x66':
@@ -178,7 +174,7 @@ def ExecuteCommand(conn):
             
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
             
         # 远程重启机柜
         elif comm[2] == b'\x67':
@@ -199,13 +195,13 @@ def ExecuteCommand(conn):
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
             
         # 远程升级
         elif comm[2] == b'\x68':
             print('ExecuteCommand','远程升级')
             
-            return comm[0],'success'
+            
         
         # 查询ICCID
         elif comm[2] == b'\x69':
@@ -224,7 +220,7 @@ def ExecuteCommand(conn):
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
         
         
         # 查询服务器地址
@@ -232,7 +228,7 @@ def ExecuteCommand(conn):
             print('ExecuteCommand','查询服务器地址')
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
         
         #查询机柜语音播报音量
         elif comm[2] == b'\x77':
@@ -253,7 +249,7 @@ def ExecuteCommand(conn):
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
             
-            return comm[0],'success'
+            
         
         # 设置机柜语音播报音量
         elif comm[2] == b'\x70':
@@ -267,7 +263,7 @@ def ExecuteCommand(conn):
             # 会话令牌
             Token = b'\x11\x22\x33\x44'
             # 音量大小 (0到 15)
-            Lvl = bytes(comm[3])
+            Lvl = bytes([comm[3]])
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Lvl
             
@@ -275,7 +271,7 @@ def ExecuteCommand(conn):
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
+            
             
         # 查询机柜网络信息
         elif comm[2] == b'\x72':
@@ -285,7 +281,7 @@ def ExecuteCommand(conn):
             # 版本
             VSN = b'\x01'
             # 有效数据的字节异或
-            CheckSum = b'\x00'
+            CheckSum = b'\x01'
             # 会话令牌
             Token = b'\x11\x22\x33\x44'
             
@@ -294,7 +290,11 @@ def ExecuteCommand(conn):
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
-            return comm[0],'success'
             
+            
+        else:
+            return 0,'no command'
+        
     
-    return 0,'no command'
+    return comm[0],'success'
+    
