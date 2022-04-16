@@ -109,13 +109,14 @@ def ParseData(self,data,conn,addr,SN):
     elif data[2] == 0x67:
         
         # 存储机柜已重启
-        print('远程重启机柜及响应')
+        print('机柜已重启')
         print(data)
         
         #return data[2],''
         
     # 远程升级
     elif data[2] == 0x68:
+        
         # 存储机柜已确认
         print('远程升级及响应')
         print(data)
@@ -125,6 +126,7 @@ def ParseData(self,data,conn,addr,SN):
         
     #
     elif data[2] == 0x69:
+        
         # 存储机柜ICCID
         print('查询ICCID')
         print(data)
@@ -133,6 +135,7 @@ def ParseData(self,data,conn,addr,SN):
         
     #
     elif data[2] == 0x6A:
+        
         # 存储服务器地址
         print('*查询服务器地址及响应')
         print(data)
@@ -141,6 +144,7 @@ def ParseData(self,data,conn,addr,SN):
     
     #
     elif data[2] == 0x80:
+        
         # 确认已弹出充电包
         print('*强制弹出充电宝')
         print(data)
@@ -149,6 +153,7 @@ def ParseData(self,data,conn,addr,SN):
     
     # 
     elif data[2] == 0x77:
+        
         # 存储机柜音量
         print('*查询机柜语音播报音量')
         print(data)
@@ -166,6 +171,7 @@ def ParseData(self,data,conn,addr,SN):
     
     #
     elif data[2] == 0x72:
+        
         # 存储机柜网络信息
         print('*查询机柜网络信息')
         print(data)
@@ -178,4 +184,4 @@ def ParseData(self,data,conn,addr,SN):
         return data[2],'unknown'
     
     
-    return data[2],''
+    return data[2],'success'
