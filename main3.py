@@ -32,7 +32,8 @@ if __name__ == '__main__':
             print('启动成功')
         except:
             print('连接中断')
+            time.sleep(5)
             continue
-        time.sleep(5)
+        
 
 
