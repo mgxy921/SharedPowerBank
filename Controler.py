@@ -49,10 +49,10 @@ class Controler(threading.Thread):
                             continue
                         command = [comm[1].encode(),0,b'\x80',slot]
                         
-                        print(command)
-                        Woshi.CommandList.append(command)
-                        continue
-                            
+                        
+                        
+                        
+                        
                         
                     else:
                         print('cabinet not found')
@@ -67,9 +67,9 @@ class Controler(threading.Thread):
                         
                         command = [SN.encode(),0,b'\x64']
                         
-                        print(command)
-                        Woshi.CommandList.append(command)
-                        continue
+                        
+                        
+                        
                         
                     else:
                         print('cabinet not found')
@@ -87,9 +87,9 @@ class Controler(threading.Thread):
                             slot = int(comm[2])
                             command = [SN,0,b'\x65',slot]
                             
-                            print(command)
-                            Woshi.CommandList.append(command)
-                            continue
+                            
+                            
+                            
                             
                         except:
                             print('槽位输入错误')
@@ -105,9 +105,9 @@ class Controler(threading.Thread):
                         
                         command = [SN,0,b'\x67']
                         
-                        print(command)
-                        Woshi.CommandList.append(command)
-                        continue
+                        
+                        
+                        
                     else:
                         print('cabinet not found')
                 
@@ -118,9 +118,9 @@ class Controler(threading.Thread):
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x69']
                         
-                        print(command)
-                        Woshi.CommandList.append(command)
-                        continue
+                        
+                        
+                        
                     else:
                         print('cabinet not found')
                         
@@ -131,9 +131,9 @@ class Controler(threading.Thread):
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x77']
                         
-                        print(command)
-                        Woshi.CommandList.append(command)
-                        continue
+                        
+                        
+                        
                     else:
                         print('cabinet not found')
                     
@@ -149,9 +149,9 @@ class Controler(threading.Thread):
                             print('音量输入错误')
                         command = [SN,0,b'\x70',lvl]
                         
-                        print(command)
-                        Woshi.CommandList.append(command)
-                        continue
+                        
+                        
+                        
                     else:
                         print('cabinet not found')
                         
@@ -163,9 +163,9 @@ class Controler(threading.Thread):
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x71']
                         
-                        print(command)
-                        Woshi.CommandList.append(command)
-                        continue
+                        
+                        
+                        
                     else:
                         print('cabinet not found')
                 
@@ -188,8 +188,8 @@ class Controler(threading.Thread):
                     print(Woshi.CommandList)
                 
                 #print(command)
-                
-                
+                print(command)
+                Woshi.CommandList.append(command)
                 
             except:
                 print('输入错误 2')

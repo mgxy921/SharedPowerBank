@@ -213,7 +213,7 @@ def ExecuteCommand(conn):
             
             
         # 查询机柜网络信息
-        elif comm[2] == b'\x72':
+        elif comm[2] == b'\x71':
             print('ExecuteCommand','查询机柜网络信息')
             # 命令长度
             PacketLen = b'\x07'

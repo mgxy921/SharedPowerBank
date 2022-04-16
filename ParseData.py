@@ -176,8 +176,8 @@ def ParseData(self,data,conn,addr,SN):
         
         #return data[2],''
     
-    #
-    elif data[2] == 0x72:
+    # 存储机柜网络信息
+    elif data[2] == 0x71:
         
         network = [0,0,0]
         # 存储机柜网络信息
