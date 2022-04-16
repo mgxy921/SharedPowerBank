@@ -94,7 +94,8 @@ class Controler(threading.Thread):
                         except:
                             print('槽位输入错误')
                             continue
-                        
+                    else:
+                        print('cabinet not found')
                         
                 # 0x67 远程重启
                 elif comm[0] == 'reboot' and len(comm) == 2:
@@ -107,6 +108,8 @@ class Controler(threading.Thread):
                         print(command)
                         Woshi.CommandList.append(command)
                         continue
+                    else:
+                        print('cabinet not found')
                 
                 # 0x69 查询ICCID
                 elif comm[0] == 'select' and comm[1] == 'iccid':
@@ -118,7 +121,8 @@ class Controler(threading.Thread):
                         print(command)
                         Woshi.CommandList.append(command)
                         continue
-                        
+                    else:
+                        print('cabinet not found')
                         
                 # 0x77 查询机柜语音播报音量
                 elif comm[0] == 'volume' and comm[1] == 'get':
@@ -130,6 +134,9 @@ class Controler(threading.Thread):
                         print(command)
                         Woshi.CommandList.append(command)
                         continue
+                    else:
+                        print('cabinet not found')
+                    
                         
                 # 0x70 设置机柜语音播报音量
                 elif comm[0] == 'volume' and comm[1] == 'set':
@@ -141,6 +148,8 @@ class Controler(threading.Thread):
                         print(command)
                         Woshi.CommandList.append(command)
                         continue
+                    else:
+                        print('cabinet not found')
                         
                         
                 elif comm[0] == 'network':
@@ -152,6 +161,8 @@ class Controler(threading.Thread):
                         print(command)
                         Woshi.CommandList.append(command)
                         continue
+                    else:
+                        print('cabinet not found')
                 
                 
                 # 查看命令列表
@@ -159,6 +170,8 @@ class Controler(threading.Thread):
                     print(Woshi.CommandList)
                 
                 #print(command)
+                
+                
                 
             except:
                 print('输入错误 2')

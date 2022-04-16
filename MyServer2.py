@@ -1,3 +1,4 @@
+from email import message
 import socketserver
 import Woshi
 import ParseData
@@ -38,10 +39,15 @@ class MyServer(socketserver.BaseRequestHandler):
             
             
             
-
             
-            ExecuteCommand.ExecuteCommand(conn)
             
+            comm , Emessage = ExecuteCommand.ExecuteCommand(conn)
+            
+            if comm == 0:
+                print(Emessage)
+                
+                
+                
             try:
                 print('连接中')
                 recv_data = conn.recv(1024)

@@ -39,13 +39,15 @@ def ExecuteCommand(conn):
             # 如果是强制弹出命令
         if comm[2] == b'\x80':
             
-            
             # 命令长度
             PacketLen = b'\x08'
+            
             # 版本
             VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x01'
+            
             # 会话令牌
             Token = b'\x11\x22\x33\x44'
             
@@ -105,6 +107,8 @@ def ExecuteCommand(conn):
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
             
             conn.sendall(command)
+            
+            
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
