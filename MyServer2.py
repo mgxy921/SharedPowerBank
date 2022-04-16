@@ -68,7 +68,7 @@ class MyServer(socketserver.BaseRequestHandler):
                         network = Pmessage
                         
                         
-                Woshi.CabinetList = { CabinetData[0] : CabinetData[1:]}
+                    Woshi.CabinetList = { CabinetData[0] : CabinetData[1:]}
                 
             except:
                 print('连接断开:',addr)
