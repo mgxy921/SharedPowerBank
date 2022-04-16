@@ -56,12 +56,14 @@ def ParseData(self,data,conn,addr,SN):
             # print('发送心跳包失败，地址:'+str(addr[0]))
             return data[2],'error'
         
+    # 存储机柜软件版本号
     elif data[2] == 0x62:
         
         
         # 存储机柜软件版本号
         print('查询机柜软件版本号及响应')
         
+    # 存储机柜服务器地址
     elif data[2] == 0x63:
         # 存储机柜服务器地址
         print('响应设置机柜服务器地址')
@@ -130,6 +132,8 @@ def ParseData(self,data,conn,addr,SN):
         # 存储机柜ICCID
         print('查询ICCID')
         print(data)
+        iccid = str(data[10:-1])[4:-1]
+        print(iccid)
         
         #return data[2],''
         
