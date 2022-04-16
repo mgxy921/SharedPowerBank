@@ -227,6 +227,8 @@ def ExecuteCommand(conn):
             
             
         else:
+            print('？？？？？')
+            Woshi.CommandList.remove(comm)
             return 0,'no command'
         
         print('发送的报文：',command)
