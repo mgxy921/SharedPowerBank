@@ -67,7 +67,7 @@ class MyServer(socketserver.BaseRequestHandler):
                     elif comm == 0x72:
                         network = Pmessage
                         
-                        
+                    CabinetData = [SN,addr[0],ICCID,network,powerbankList]
                     Woshi.CabinetList = { CabinetData[0] : CabinetData[1:]}
                 
             except:
