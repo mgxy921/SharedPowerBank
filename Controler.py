@@ -33,6 +33,7 @@ class Controler(threading.Thread):
                 elif comm[0] == 'cabinetlist' :
                     
                     print(Woshi.CabinetList)
+                    break
                     
                 # 0x80 强制弹出充电宝  判断命令长度
                 elif comm[0] == 'eject' and len(comm) == 3:
@@ -47,7 +48,10 @@ class Controler(threading.Thread):
                             print('槽位输入错误')
                             break
                         command = [comm[1].encode(),0,b'\x80',slot]
+                        
+                        print(command)
                         Woshi.CommandList.append(command)
+                        break
                             
                         
                     else:
@@ -62,6 +66,8 @@ class Controler(threading.Thread):
                         SN = comm[1]
                         
                         command = [SN.encode(),0,b'\x64']
+                        
+                        print(command)
                         Woshi.CommandList.append(command)
                         break
                         
@@ -80,15 +86,14 @@ class Controler(threading.Thread):
                             # 判断是否是数字
                             slot = int(comm[2])
                             command = [SN,0,b'\x65',slot]
+                            
+                            print(command)
                             Woshi.CommandList.append(command)
+                            break
                             
                         except:
                             print('槽位输入错误')
                             break
-                        
-                        
-                        
-                    
                         
                         
                 # 0x67 远程重启
@@ -98,7 +103,10 @@ class Controler(threading.Thread):
                     if SN in Woshi.CabinetList:
                         
                         command = [SN,0,b'\x67']
+                        
+                        print(command)
                         Woshi.CommandList.append(command)
+                        break
                 
                 # 0x69 查询ICCID
                 elif comm[0] == 'select' and comm[1] == 'iccid':
@@ -106,7 +114,10 @@ class Controler(threading.Thread):
                     SN = comm[2].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x69']
+                        
+                        print(command)
                         Woshi.CommandList.append(command)
+                        break
                         
                         
                 # 0x77 查询机柜语音播报音量
@@ -115,7 +126,10 @@ class Controler(threading.Thread):
                     SN = comm[2].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x77']
+                        
+                        print(command)
                         Woshi.CommandList.append(command)
+                        break
                         
                 # 0x70 设置机柜语音播报音量
                 elif comm[0] == 'volume' and comm[1] == 'set':
@@ -123,19 +137,29 @@ class Controler(threading.Thread):
                     SN = comm[2].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x70']
+                        
+                        print(command)
                         Woshi.CommandList.append(command)
-                
+                        break
+                        
+                        
                 elif comm[0] == 'network':
                     # 查询有没有这个机柜
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x72']
+                        
+                        print(command)
                         Woshi.CommandList.append(command)
+                        break
+                
                 
                 # 查看命令列表
                 elif comm[0] == 'commandlist':
                     print(Woshi.CommandList)
-                    
+                
+                #print(command)
+                
             except:
                 print('输入错误 2')
                 
