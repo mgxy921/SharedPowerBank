@@ -40,9 +40,12 @@ def ParseData(self,data,conn,addr,SN):
             # print('登录时连接断开:',addr[0])
             return data[2],'error'
         
+    # 收到心跳包
     elif data[2] == 0x61:
         
-        if SN == b'':
+        # 判断SN是否为空
+        if not SN:
+            
             return data[2],'SN not found'
         
         try:
@@ -67,12 +70,12 @@ def ParseData(self,data,conn,addr,SN):
     # 解析机柜发送给服务器的库存数据
     elif data[2] == 0x64:
         # 判断SN是否为空
-        if SN == b'':
-            return 'SN not found',''
+        if not SN:
+            return data[2],'SN not found'
         # 剩余充电宝个数
         RemainNum = data[9]
         if RemainNum == 0:
-            return 'No powerbank',''
+            return data[2],'No powerbank'
         # 解析充电宝数据
         powerbankList = Woshi.getpbdata(data)
         

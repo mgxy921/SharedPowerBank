@@ -20,7 +20,7 @@ def ExecuteCommand(conn):
     # 初始化要执行的命令
     command = b''
     print('执行命令')
-    print(Woshi.CommandList)
+    # print(Woshi.CommandList)
     if len(Woshi.CommandList) == 0:
         # print('commandlist lenth is 0')
         return 'commandlist lenth is 0'
@@ -87,6 +87,7 @@ def ExecuteCommand(conn):
         # 设置服务器地址
         elif comm[2] == b'\x63':
             
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
         
         #查询机柜库存
@@ -104,7 +105,7 @@ def ExecuteCommand(conn):
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
             
             conn.sendall(command)
-            
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
         # 借充电宝
@@ -122,6 +123,9 @@ def ExecuteCommand(conn):
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
             
             conn.sendall(command)
+            
+            
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
         #还充电宝
@@ -151,6 +155,9 @@ def ExecuteCommand(conn):
             
             conn.sendall(command)
             print(command)
+            
+            # 命令执行完要删除此命令
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
         # 远程重启机柜
@@ -166,6 +173,9 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
             
+            
+            # 命令执行完要删除此命令
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
         # 远程升级
@@ -185,12 +195,17 @@ def ExecuteCommand(conn):
             Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
+            
+            # 命令执行完要删除此命令
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
         
         
         # 查询服务器地址
         elif comm[2] == b'\x6A':
             
+            # 命令执行完要删除此命令
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
         
         #查询机柜语音播报音量
@@ -207,6 +222,8 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
             
+            # 命令执行完要删除此命令
+            Woshi.CommandList.remove(comm)
             
             return comm[0],'success'
         
@@ -226,6 +243,8 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Lvl
             
+            # 命令执行完要删除此命令
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
         # 查询机柜网络信息
@@ -241,6 +260,9 @@ def ExecuteCommand(conn):
             Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
+            
+            # 命令执行完要删除此命令
+            Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
     
