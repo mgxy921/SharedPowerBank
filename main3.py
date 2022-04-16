@@ -27,7 +27,7 @@ if __name__ == '__main__':
         server.serve_forever()
         print('启动成功')
     except:
-        print('连接失败')
+        print('连接中断')
         
 
 
