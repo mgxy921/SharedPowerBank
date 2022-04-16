@@ -6,8 +6,6 @@ def ExecuteCommand(conn):
     def getCheckSum(a):
         b = 0
         for i in range(len(a)):
-            
-            
             if i==0:
                 b = a[i]
             else :
@@ -164,8 +162,7 @@ def ExecuteCommand(conn):
             
             Result = b'\x01'
             
-            CheckSum = getCheckSum([slot+Result])
-            
+            CheckSum = getCheckSum(slot+Result)
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Slot + Result
             
