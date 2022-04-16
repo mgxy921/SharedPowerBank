@@ -30,11 +30,9 @@ class Controler(threading.Thread):
                     exit()
                 
                 # 查询已连接设备数据
-                elif comm[0] == 'list':
-                    if len(comm) <= 1:
-                        break
-                    if comm[1] == 'cabinet':
-                        print(Woshi.CabinetList)
+                elif comm[0] == 'cabinetlist' :
+                    
+                    print(Woshi.CabinetList)
                     
                 # 0x80 强制弹出充电宝  判断命令长度
                 elif comm[0] == 'eject' and len(comm) == 3:
@@ -64,6 +62,7 @@ class Controler(threading.Thread):
                         SN = comm[1]
                         
                         command = [SN.encode(),0,b'\x64']
+                        Woshi.CommandList.append(command)
                         break
                         
                     else:
@@ -80,14 +79,16 @@ class Controler(threading.Thread):
                         try:
                             # 判断是否是数字
                             slot = int(comm[2])
+                            command = [SN,0,b'\x65',slot]
+                            Woshi.CommandList.append(command)
                             
                         except:
                             print('槽位输入错误')
                             break
                         
-                        command = [SN,0,b'\x65',slot]
                         
-                    Woshi.CommandList.append(command)
+                        
+                    
                         
                         
                 # 0x67 远程重启
@@ -105,28 +106,31 @@ class Controler(threading.Thread):
                     SN = comm[2].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x69']
-                
+                        Woshi.CommandList.append(command)
+                        
+                        
                 # 0x77 查询机柜语音播报音量
                 elif comm[0] == 'volume' and comm[1] == 'get':
                     # 查询有没有这个机柜
                     SN = comm[2].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x77']
-                
+                        Woshi.CommandList.append(command)
+                        
                 # 0x70 设置机柜语音播报音量
                 elif comm[0] == 'volume' and comm[1] == 'set':
                     # 查询有没有这个机柜
                     SN = comm[2].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x70']
-                
+                        Woshi.CommandList.append(command)
                 
                 elif comm[0] == 'network':
                     # 查询有没有这个机柜
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x72']
-                
+                        Woshi.CommandList.append(command)
                 
                 # 查看命令列表
                 elif comm[0] == 'commandlist':
