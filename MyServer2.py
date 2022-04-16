@@ -55,6 +55,7 @@ class MyServer(socketserver.BaseRequestHandler):
                     break
                 else:
                     print(recv_data)
+                    print(hex(recv_data[2]))
                     ParseData.ParseData(self,recv_data,conn,addr,SN)
             except:
                 print('连接断开:',addr)
