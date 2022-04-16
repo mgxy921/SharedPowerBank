@@ -155,12 +155,13 @@ class Controler(threading.Thread):
                     else:
                         print('cabinet not found')
                         
-                        
+                
+                # 查询机柜网络信息
                 elif comm[0] == 'network':
                     # 查询有没有这个机柜
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
-                        command = [SN,0,b'\x72']
+                        command = [SN,0,b'\x71']
                         
                         print(command)
                         Woshi.CommandList.append(command)
