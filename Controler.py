@@ -34,10 +34,6 @@ class Controler(threading.Thread):
                     
                     print(Woshi.CabinetList)
                     continue
-                elif comm[0] == 'cabinet' :
-                    
-                    print(Woshi.CabinetList)
-                    continue
                     
                 # 0x80 强制弹出充电宝  判断命令长度
                 elif comm[0] == 'eject' and len(comm) == 3:

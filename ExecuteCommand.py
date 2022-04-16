@@ -242,7 +242,7 @@ def ExecuteCommand(conn):
             # 版本
             VSN = b'\x01'
             # 有效数据的字节异或
-            CheckSum = b'\x01'
+            CheckSum = b'\x00'
             # 会话令牌
             Token = b'\x11\x22\x33\x44'
             
@@ -285,7 +285,7 @@ def ExecuteCommand(conn):
             # 版本
             VSN = b'\x01'
             # 有效数据的字节异或
-            CheckSum = b'\x01'
+            CheckSum = b'\x00'
             # 会话令牌
             Token = b'\x11\x22\x33\x44'
             
