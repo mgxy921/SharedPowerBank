@@ -24,7 +24,7 @@ class Controler(threading.Thread):
             # print(comm)
             try:
                 if len(comm) == 0:
-                    break
+                    continue
                 
                 if comm[0] == 'exit':
                     exit()
@@ -33,7 +33,7 @@ class Controler(threading.Thread):
                 elif comm[0] == 'cabinetlist' :
                     
                     print(Woshi.CabinetList)
-                    break
+                    continue
                     
                 # 0x80 强制弹出充电宝  判断命令长度
                 elif comm[0] == 'eject' and len(comm) == 3:
@@ -46,12 +46,12 @@ class Controler(threading.Thread):
                             
                         except:
                             print('槽位输入错误')
-                            break
+                            continue
                         command = [comm[1].encode(),0,b'\x80',slot]
                         
                         print(command)
                         Woshi.CommandList.append(command)
-                        break
+                        continue
                             
                         
                     else:
@@ -69,7 +69,7 @@ class Controler(threading.Thread):
                         
                         print(command)
                         Woshi.CommandList.append(command)
-                        break
+                        continue
                         
                     else:
                         print('cabinet not found')
@@ -89,11 +89,11 @@ class Controler(threading.Thread):
                             
                             print(command)
                             Woshi.CommandList.append(command)
-                            break
+                            continue
                             
                         except:
                             print('槽位输入错误')
-                            break
+                            continue
                         
                         
                 # 0x67 远程重启
@@ -106,7 +106,7 @@ class Controler(threading.Thread):
                         
                         print(command)
                         Woshi.CommandList.append(command)
-                        break
+                        continue
                 
                 # 0x69 查询ICCID
                 elif comm[0] == 'select' and comm[1] == 'iccid':
@@ -117,7 +117,7 @@ class Controler(threading.Thread):
                         
                         print(command)
                         Woshi.CommandList.append(command)
-                        break
+                        continue
                         
                         
                 # 0x77 查询机柜语音播报音量
@@ -129,7 +129,7 @@ class Controler(threading.Thread):
                         
                         print(command)
                         Woshi.CommandList.append(command)
-                        break
+                        continue
                         
                 # 0x70 设置机柜语音播报音量
                 elif comm[0] == 'volume' and comm[1] == 'set':
@@ -140,7 +140,7 @@ class Controler(threading.Thread):
                         
                         print(command)
                         Woshi.CommandList.append(command)
-                        break
+                        continue
                         
                         
                 elif comm[0] == 'network':
@@ -151,7 +151,7 @@ class Controler(threading.Thread):
                         
                         print(command)
                         Woshi.CommandList.append(command)
-                        break
+                        continue
                 
                 
                 # 查看命令列表
