@@ -98,7 +98,7 @@ def ParseData(self,data,conn,addr,SN):
     elif data[2] == 0x66:
         # 判断是否有机柜SN码
         
-        if SN == '':
+        if not SN:
             return 0x66,'SN not found'
         
         # 返回归还结果 归还成功或失败
@@ -126,7 +126,7 @@ def ParseData(self,data,conn,addr,SN):
         #return data[2],''
         
         
-    #
+    #机柜ICCID
     elif data[2] == 0x69:
         
         # 存储机柜ICCID
@@ -176,11 +176,12 @@ def ParseData(self,data,conn,addr,SN):
     #
     elif data[2] == 0x72:
         
+        network = [0,0,0]
         # 存储机柜网络信息
         print('*查询机柜网络信息')
         print(data)
         
-        #return data[2],''
+        return data[2],network
     
     
     else :

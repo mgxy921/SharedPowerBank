@@ -85,12 +85,22 @@ def ExecuteCommand(conn):
             print('command:',command)
             
             conn.send(command)
+            print(command)
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
         
         # 设置服务器地址
         elif comm[2] == b'\x63':
             print('ExecuteCommand','设置服务器地址')
+            
+            # 命令长度
+            PacketLen = b'\x07'
+            # 版本
+            VSN = b'\x01'
+            # 有效数据的字节异或
+            CheckSum = b'\x00'
+            # 会话令牌
+            Token = b'\x11\x22\x33\x44'
             
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
@@ -112,7 +122,7 @@ def ExecuteCommand(conn):
             
             conn.send(command)
             
-            
+            print(command)
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
@@ -133,7 +143,7 @@ def ExecuteCommand(conn):
             
             conn.send(command)
             
-            
+            print(command)
             Woshi.CommandList.remove(comm)
             return comm[0],'success'
             
@@ -185,6 +195,7 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
             
+            print(command)
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
@@ -236,6 +247,8 @@ def ExecuteCommand(conn):
             Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
+            
+            print(command)
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
@@ -257,6 +270,8 @@ def ExecuteCommand(conn):
             Lvl = bytes(comm[3])
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Lvl
+            
+            print(command)
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)
@@ -275,7 +290,7 @@ def ExecuteCommand(conn):
             Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
-            
+            print(command)
             conn.send(command)
             # 命令执行完要删除此命令
             Woshi.CommandList.remove(comm)

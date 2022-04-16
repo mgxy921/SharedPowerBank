@@ -3,7 +3,7 @@
     
     # 初始化全局变量
 def _init():
-    # 存储机柜数据 Cabinet.SN : ip
+    # 存储机柜数据 CabinetData.SN :  [SN,addr,ICCID,network,powerbankList]
     global CabinetList
     CabinetList = {}
     
