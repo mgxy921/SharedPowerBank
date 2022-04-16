@@ -24,7 +24,7 @@ class Controler(threading.Thread):
             # print(comm)
             try:
                 if len(comm) == 0:
-                    continue
+                    break
                 
                 if comm[0] == 'exit':
                     exit()
@@ -32,29 +32,25 @@ class Controler(threading.Thread):
                 # 查询已连接设备数据
                 elif comm[0] == 'list':
                     if len(comm) <= 1:
-                        continue
+                        break
                     if comm[1] == 'cabinet':
                         print(Woshi.CabinetList)
                     
-                # 0x80 强制弹出充电宝
-                elif comm[0] == 'eject':
+                # 0x80 强制弹出充电宝  判断命令长度
+                elif comm[0] == 'eject' and len(comm) == 3:
                     # 查询有没有这个机柜
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
-                        # 判断命令长度
-                        if len(comm) == 3:
-                            try:
-                                # 判断是否是数字
-                                slot = int(comm[2])
-                                
-                            except:
-                                print('槽位输入错误')
-                                continue
-                            command = [comm[1].encode(),0,b'\x80',slot]
-                            Woshi.CommandList.append(command)
+                        try:
+                            # 判断是否是数字
+                            slot = int(comm[2])
                             
-                        else:
-                            print('eject command error')
+                        except:
+                            print('槽位输入错误')
+                            break
+                        command = [comm[1].encode(),0,b'\x80',slot]
+                        Woshi.CommandList.append(command)
+                            
                         
                     else:
                         print('cabinet not found')
@@ -68,7 +64,7 @@ class Controler(threading.Thread):
                         SN = comm[1]
                         
                         command = [SN.encode(),0,b'\x64']
-                        continue
+                        break
                         
                     else:
                         print('cabinet not found')
@@ -81,7 +77,15 @@ class Controler(threading.Thread):
                     
                     if SN in Woshi.CabinetList:
                         
-                        command = [SN,0,b'\x65',comm[2].encode()]
+                        try:
+                            # 判断是否是数字
+                            slot = int(comm[2])
+                            
+                        except:
+                            print('槽位输入错误')
+                            break
+                        
+                        command = [SN,0,b'\x65',slot]
                         
                     Woshi.CommandList.append(command)
                         
