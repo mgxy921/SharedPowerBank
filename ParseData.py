@@ -4,7 +4,7 @@ import Woshi
     
 def ParseData(self,data,conn,addr,SN):
     
-    
+    command = []
     print('解析命令')
     if len(data) == 0:
         return '',''
@@ -102,10 +102,11 @@ def ParseData(self,data,conn,addr,SN):
             return 0x66,'SN not found'
         
         # 返回归还结果 归还成功或失败
-        print('还充电宝及响应')
-        command = []
+        print('Parse还充电宝及响应')
+        
         
         command = [SN.encode(),0,b'\x66',data[9]]
+        
         Woshi.CommandList.append(command)
         
         return data[2],'success'

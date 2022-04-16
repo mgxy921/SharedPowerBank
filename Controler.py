@@ -112,7 +112,7 @@ class Controler(threading.Thread):
                         print('cabinet not found')
                 
                 # 0x69 查询ICCID
-                elif comm[1] == 'iccid':
+                elif comm[0] == 'iccid':
                     # 查询有没有这个机柜
                     SN = comm[2].encode()
                     if SN in Woshi.CabinetList:
@@ -141,7 +141,7 @@ class Controler(threading.Thread):
                 # 0x70 设置机柜语音播报音量
                 elif comm[0] == 'volume' and comm[1] == 'set':
                     # 查询有没有这个机柜
-                    SN = comm[2].encode()
+                    SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         try:
                             lvl = int(comm[3])
@@ -172,20 +172,21 @@ class Controler(threading.Thread):
                 # 查询服务器地址
                 elif comm[0] == 'server':
                 
-                    SN = comm[2].encode()
+                    SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x6A']
                 
                 # 查询机柜软件版本号
                 elif comm[0] == 'version':
                 
-                    SN = comm[2].encode()
+                    SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x62']
                 
                 # 查看命令列表
                 elif comm[0] == 'commandlist':
                     print(Woshi.CommandList)
+                    continue
                 
                 #print(command)
                 print(command)

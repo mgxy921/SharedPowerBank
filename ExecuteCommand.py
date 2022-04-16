@@ -31,6 +31,9 @@ def ExecuteCommand(conn):
     for comm in Woshi.CommandList:
         command = b''
         # 一个线程对应一个机柜连接，如果有这个机柜的命令就执行
+        if len(comm) == 0:
+            Woshi.CommandList.remove(comm)
+            return 0,'commandlist lenth is 0'
         #if comm[0] == SN :
             
             # 如果是强制弹出命令
@@ -176,6 +179,10 @@ def ExecuteCommand(conn):
             print('ExecuteCommand','查询服务器地址')
             # 命令执行完要删除此命令
             
+            # 命令长度
+            PacketLen = b'\x07'
+            # 有效数据的字节异或
+            CheckSum = b'\x01'
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
             
             
