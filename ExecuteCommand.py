@@ -23,6 +23,10 @@ def ExecuteCommand(conn):
         # print('commandlist lenth is 0')
         return 0,'commandlist lenth is 0'
     
+    # 版本
+    VSN = b'\x01'
+    # 会话令牌
+    Token = b'\x11\x22\x33\x44'
     
     for comm in Woshi.CommandList:
         command = b''
@@ -36,14 +40,10 @@ def ExecuteCommand(conn):
             # 命令长度
             PacketLen = b'\x08'
             
-            # 版本
-            VSN = b'\x01'
             
             # 有效数据的字节异或
             CheckSum = b'\x01'
             
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
             
             # 槽位
             slot = b''
@@ -51,11 +51,7 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + slot 
             
-            print('command:',command)
             
-            conn.send(command)
-            print('强制弹出充电宝')
-            Woshi.CommandList.remove(comm)
             
         
         
@@ -66,20 +62,13 @@ def ExecuteCommand(conn):
             
             # 命令长度
             PacketLen = b'\x07'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x00'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
             
-            print('command:',command)
             
-            conn.send(command)
-            print(command)
-            Woshi.CommandList.remove(comm)
             
         
         # 设置服务器地址
@@ -88,14 +77,12 @@ def ExecuteCommand(conn):
             
             # 命令长度
             PacketLen = b'\x07'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x00'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
             
-            Woshi.CommandList.remove(comm)
+            
+            
             
         
         #查询机柜库存
@@ -104,19 +91,13 @@ def ExecuteCommand(conn):
             
             # 命令长度
             PacketLen = b'\x07'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x00'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
+            
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token 
             
-            conn.send(command)
-            
-            print(command)
-            Woshi.CommandList.remove(comm)
             
             
         # 借充电宝
@@ -125,20 +106,14 @@ def ExecuteCommand(conn):
             
             # 命令长度
             PacketLen = b'\x07'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x00'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
+            
             
             slot = bytes([comm[3]])
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + slot
             
-            conn.send(command)
-            
-            print(command)
-            Woshi.CommandList.remove(comm)
             
             
         #还充电宝
@@ -147,17 +122,11 @@ def ExecuteCommand(conn):
             
             # 命令长度
             PacketLen = b'\x09'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x01'
             
-            
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
-            
             # 槽位
-            slot = b''
             Slot = bytes([comm[3]])
             
             Result = b'\x01'
@@ -166,11 +135,6 @@ def ExecuteCommand(conn):
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Slot + Result
             
-            conn.send(command)
-            print(command)
-            
-            # 命令执行完要删除此命令
-            Woshi.CommandList.remove(comm)
             
             
         # 远程重启机柜
@@ -179,19 +143,12 @@ def ExecuteCommand(conn):
             
             # 命令长度
             PacketLen = b'\x07'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x00'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
             
-            print(command)
-            conn.send(command)
-            # 命令执行完要删除此命令
-            Woshi.CommandList.remove(comm)
             
             
         # 远程升级
@@ -206,17 +163,11 @@ def ExecuteCommand(conn):
             print('ExecuteCommand','查询ICCID')
             # 命令长度
             PacketLen = b'\x07'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x01'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
-            conn.send(command)
-            # 命令执行完要删除此命令
-            Woshi.CommandList.remove(comm)
             
         
         
@@ -224,7 +175,9 @@ def ExecuteCommand(conn):
         elif comm[2] == b'\x6A':
             print('ExecuteCommand','查询服务器地址')
             # 命令执行完要删除此命令
-            Woshi.CommandList.remove(comm)
+            
+            command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
+            
             
         
         #查询机柜语音播报音量
@@ -232,19 +185,13 @@ def ExecuteCommand(conn):
             print('ExecuteCommand','查询机柜语音播报音量')
             # 命令长度
             PacketLen = b'\x08'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x00'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
             
-            print(command)
-            conn.send(command)
-            # 命令执行完要删除此命令
-            Woshi.CommandList.remove(comm)
+            
             
             
         
@@ -253,21 +200,16 @@ def ExecuteCommand(conn):
             print('ExecuteCommand','设置机柜语音播报音量')
             # 命令长度
             PacketLen = b'\x08'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x01'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
+            
             # 音量大小 (0到 15)
             Lvl = bytes([comm[3]])
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Lvl
             
-            print(command)
-            conn.send(command)
-            # 命令执行完要删除此命令
-            Woshi.CommandList.remove(comm)
+            
             
             
         # 查询机柜网络信息
@@ -275,22 +217,23 @@ def ExecuteCommand(conn):
             print('ExecuteCommand','查询机柜网络信息')
             # 命令长度
             PacketLen = b'\x07'
-            # 版本
-            VSN = b'\x01'
+            
             # 有效数据的字节异或
             CheckSum = b'\x01'
-            # 会话令牌
-            Token = b'\x11\x22\x33\x44'
+            
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token
-            print(command)
-            conn.send(command)
-            # 命令执行完要删除此命令
-            Woshi.CommandList.remove(comm)
+            
             
             
         else:
             return 0,'no command'
+        
+        print('发送的报文：',command)
+        # 发送命令
+        conn.send(command)
+        # 命令执行完要删除此命令
+        Woshi.CommandList.remove(comm)
         
     
     return comm[0],'success'
