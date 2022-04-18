@@ -189,7 +189,7 @@ class Controler(threading.Thread):
                     continue
                 
                 #print(command)
-                print(command)
+                #print(command)
                 Woshi.CommandList.append(command)
                 
             except:

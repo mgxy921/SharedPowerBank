@@ -5,7 +5,7 @@ import Woshi
 def ParseData(self,data,conn,addr,SN):
     
     command = []
-    print('解析命令')
+    #print('解析命令')
     if len(data) == 0:
         return '',''
     
@@ -26,13 +26,7 @@ def ParseData(self,data,conn,addr,SN):
             
             # 要求机柜返回机柜库存数据
             conn.send(Woshi.selectCabinet)
-            print('登录后查询机柜库存')
-            # 按照CabinetList长度获取连接设备数量
-            #print(CabinetList,'已连接设备数量：',len(CabinetList))
-            
-            # 要求机柜查询库存
-            # Command = []
-            # CommandList.append(self.selectCabinet)
+            #print('登录后查询机柜库存')
             
             return data[2],SN
             

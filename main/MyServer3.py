@@ -86,5 +86,5 @@ class MyServer(socketserver.BaseRequestHandler):
                 continue
             
             
-            conn.close()
+            
         
