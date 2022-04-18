@@ -2,12 +2,10 @@ import socketserver
 import Woshi
 import ParseData
 import ExecuteCommand
-import asyncio
 
 
 class MyServer(socketserver.BaseRequestHandler):
     
-    @asyncio.coroutine
     def handle(self):
 
         # SN , addr , SN , ICCID , network , powerbankList
@@ -49,13 +47,10 @@ class MyServer(socketserver.BaseRequestHandler):
                 print(Emessage)
                 
             try:
-                
                 print('连接中')
-                recv_data = yield from conn.recv(1024)
-                
+                recv_data = conn.recv(1024)
                 if not recv_data:
                     continue
-                
                 else:
                     print(recv_data)
                     print(hex(recv_data[2]))
