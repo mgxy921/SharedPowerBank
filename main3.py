@@ -1,7 +1,6 @@
 import socketserver
 import time
 import Woshi
-import threading
 import MyServer2
 import Controler
 

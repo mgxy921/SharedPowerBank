@@ -33,6 +33,8 @@ class MyServer(socketserver.BaseRequestHandler):
         
         powerbankList = {}
         
+        volume = 0
+        
         conn = self.request
         addr = self.client_address
         
@@ -55,19 +57,27 @@ class MyServer(socketserver.BaseRequestHandler):
                     comm , Pmessage = ParseData.ParseData(self,recv_data,conn,addr,SN)
                     
                     if comm == 0x64:
+                        # 取出机柜库存信息
                         powerbankList = Pmessage
                         
-                        
                     elif comm == 0x60:
+                        # 取出机柜SN码
                         SN = Pmessage
                         
                     elif comm ==0x69:
+                        # 取出机柜ICCID
                         ICCID = Pmessage
                         
-                    elif comm == 0x72:
+                    elif comm == 0x71:
+                        # 取出机柜网络信息
                         network = Pmessage
                         
-                    CabinetData = [SN,addr[0],ICCID,network,powerbankList]
+                    elif comm == 0x77:
+                        volume = Pmessage
+                        
+                    # 更新机柜数据
+                    CabinetData = [SN,addr[0],ICCID,network,powerbankList,volume]
+                    # 把机柜数据存到全局变量
                     Woshi.CabinetList = { CabinetData[0] : CabinetData[1:]}
                 
             except:

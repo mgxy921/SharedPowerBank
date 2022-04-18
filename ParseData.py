@@ -166,7 +166,9 @@ def ParseData(self,data,conn,addr,SN):
         print('*查询机柜语音播报音量')
         print(data)
         
-        #return data[2],''
+        volume = data[9]
+        
+        return data[2],volume
     
     #
     elif data[2] == 0x70:
@@ -184,6 +186,8 @@ def ParseData(self,data,conn,addr,SN):
         # 存储机柜网络信息
         print('*查询机柜网络信息')
         print(data)
+        
+        network = data[9:]
         
         return data[2],network
     
