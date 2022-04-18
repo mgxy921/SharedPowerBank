@@ -110,7 +110,7 @@ class Controler(threading.Thread):
                 # 0x69 查询ICCID
                 elif comm[0] == 'iccid':
                     # 查询有没有这个机柜
-                    SN = comm[2].encode()
+                    SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x69']
                         

@@ -133,7 +133,7 @@ def ParseData(self,data,conn,addr,SN):
         iccid = str(data[10:-1])[4:-1]
         print(iccid)
         
-        #return data[2],''
+        return data[2],iccid
         
     #
     elif data[2] == 0x6A:
