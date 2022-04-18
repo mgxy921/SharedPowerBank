@@ -5,7 +5,7 @@ import Woshi
 def ParseData(self,data,conn,addr,SN):
     
     command = []
-    #print('解析命令')
+    print('解析命令')
     if len(data) == 0:
         return '',''
     
@@ -141,8 +141,18 @@ def ParseData(self,data,conn,addr,SN):
         # 存储服务器地址
         print('*查询服务器地址及响应')
         print(data)
+        AddressLen = data[10]
+        PortLen = data[AddressLen + 12]
         
-        #return data[2],''
+        Heartbeat = data[-1]
+        
+        Address = data[11:10+AddressLen].decode('utf-8')
+        Port = data[13+AddressLen:-2].decode('utf-8')
+        
+        serveraddr = (Address,Port,Heartbeat)
+        
+        
+        return data[2],serveraddr
     
     #
     elif data[2] == 0x80:

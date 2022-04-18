@@ -3,6 +3,8 @@ import Woshi
 
 # 执行命令
 def ExecuteCommand(conn):
+    
+    # 计算异或校验
     def getCheckSum(a):
         b = 0
         for i in range(len(a)):
@@ -17,7 +19,7 @@ def ExecuteCommand(conn):
     
     # 初始化要执行的命令
     command = b''
-    # print('执行命令')
+    print('执行命令')
     # print(Woshi.CommandList)
     if len(Woshi.CommandList) == 0:
         # print('commandlist lenth is 0')
@@ -84,9 +86,17 @@ def ExecuteCommand(conn):
             # 有效数据的字节异或
             CheckSum = b'\x00'
             
+            Address = comm[3].encode('utf-8')
+            AddressLen = (len(Address)+1).to_bytes(2,byteorder='big')
+
+            Port = comm[4].encode('utf-8')
+            PortLen = (len(Port)+1).to_bytes(2,byteorder='big')
+
+            Heartbeat = b'\x1e'
+
+            Payload = AddressLen + Address + b'\x00' + PortLen + Port + b'\x00' + Heartbeat
             
-            
-            
+            command = PacketLen + comm[2] + VSN + CheckSum + Token + Payload
         
         #查询机柜库存
         elif comm[2] == b'\x64':
@@ -134,7 +144,7 @@ def ExecuteCommand(conn):
             
             Result = b'\x01'
             
-            CheckSum = getCheckSum(slot+Result)
+            CheckSum = getCheckSum(slot+Result).to_bytes(1,byteorder='big')
             
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + Slot + Result
             

@@ -87,10 +87,6 @@ class Controler(threading.Thread):
                             slot = int(comm[2])
                             command = [SN,0,b'\x65',slot]
                             
-                            
-                            
-                            
-                            
                         except:
                             print('槽位输入错误')
                             continue
@@ -125,9 +121,9 @@ class Controler(threading.Thread):
                         print('cabinet not found')
                         
                 # 0x77 查询机柜语音播报音量
-                elif comm[0] == 'volume' and comm[1] == 'get':
+                elif comm[0] == 'getvolume' :
                     # 查询有没有这个机柜
-                    SN = comm[2].encode()
+                    SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x77']
                         
@@ -139,12 +135,12 @@ class Controler(threading.Thread):
                     
                         
                 # 0x70 设置机柜语音播报音量
-                elif comm[0] == 'volume' and comm[1] == 'set':
+                elif comm[0] == 'setvolume' :
                     # 查询有没有这个机柜
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         try:
-                            lvl = int(comm[3])
+                            lvl = int(comm[2])
                         except:
                             print('音量输入错误')
                         command = [SN,0,b'\x70',lvl]
@@ -157,7 +153,7 @@ class Controler(threading.Thread):
                         
                 
                 # 查询机柜网络信息
-                elif comm[0] == 'network':
+                elif comm[0] == 'network' and len(comm) == 2:
                     # 查询有没有这个机柜
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
@@ -170,14 +166,48 @@ class Controler(threading.Thread):
                         print('cabinet not found')
                 
                 # 查询服务器地址
-                elif comm[0] == 'server':
+                elif comm[0] == 'server' and len(comm) == 2:
                 
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
                         command = [SN,0,b'\x6A']
                 
+                # 设置服务器地址
+                elif comm[0] == 'setserver' and len(comm) == 4:
+                    SN = comm[1].encode()
+                    if SN in Woshi.CabinetList:
+                        
+                        if Woshi.check_ip(comm[2]) == True:
+                            
+                            try:
+                                # 判断是否是数字
+                                port = int(comm[3])
+                                
+                            except:
+                                print('端口输入错误')
+                                continue
+                                    # 判断端口是否在0-65535
+                            if port > 65535:
+                                print('端口范围输入错误')
+                                continue
+                            
+                            else:
+                                command = [SN,0,b'\x63',comm[2],comm[3]]
+                                
+                            
+                            
+                            print()
+                            
+                            
+                        else:
+                            print('ip error')
+                            continue
+                            
+                        
+                
+                
                 # 查询机柜软件版本号
-                elif comm[0] == 'version':
+                elif comm[0] == 'version' and len(comm) == 2:
                 
                     SN = comm[1].encode()
                     if SN in Woshi.CabinetList:
@@ -189,7 +219,7 @@ class Controler(threading.Thread):
                     continue
                 
                 #print(command)
-                #print(command)
+                print(command)
                 Woshi.CommandList.append(command)
                 
             except:

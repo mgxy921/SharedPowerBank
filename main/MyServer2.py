@@ -9,7 +9,8 @@ class MyServer(socketserver.BaseRequestHandler):
     
     @asyncio.coroutine
     def handle(self):
-
+        
+        print('连接中')
         # SN , addr , SN , ICCID , network , powerbankList
         # 0     1      2     3        4           5
         # CabinetData.SN :  [SN,addr,ICCID,network,powerbankList]
@@ -36,11 +37,16 @@ class MyServer(socketserver.BaseRequestHandler):
         powerbankList = {}
         
         volume = 0
+        serveraddr = ()
         
         conn = self.request
         addr = self.client_address
         
-        CabinetData = [SN,addr[0],ICCID,network,powerbankList]
+        def refresh(self):
+            self.CabinetData = [self.SN,self.addr[0],self.ICCID,self.network,self.powerbankList,self.volume,self.serveraddr]
+        
+        refresh()
+        
         while True:
             
             comm , Emessage = ExecuteCommand.ExecuteCommand(conn)
@@ -81,8 +87,11 @@ class MyServer(socketserver.BaseRequestHandler):
                     elif comm == 0x77:
                         volume = Pmessage
                         
+                    elif comm == 0x6A:
+                        serveraddr = Pmessage
+                        
                     # 更新机柜数据
-                    CabinetData = [SN,addr[0],ICCID,network,powerbankList,volume]
+                    CabinetData = [SN,addr[0],ICCID,network,powerbankList,volume,serveraddr]
                     # 把机柜数据存到全局变量
                     Woshi.CabinetList = { CabinetData[0] : CabinetData[1:]}
                 
