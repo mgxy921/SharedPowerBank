@@ -43,11 +43,11 @@ class MyServer(socketserver.BaseRequestHandler):
             
             comm , Emessage = ExecuteCommand.ExecuteCommand(conn)
             
-            if comm == 0:
-                print(Emessage)
+            #if comm == 0:
+                #print(Emessage)
                 
             try:
-                print('连接中')
+                # print('连接中')
                 recv_data = conn.recv(1024)
                 if not recv_data:
                     continue
@@ -82,7 +82,7 @@ class MyServer(socketserver.BaseRequestHandler):
                     Woshi.CabinetList = { CabinetData[0] : CabinetData[1:]}
                 
             except:
-                print('连接断开:',addr)
+                # print('连接断开:',addr)
                 continue
             
             
