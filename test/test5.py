@@ -9,7 +9,12 @@ def hexlisttostr(hexlist):
     str1=''
     for a in hexlist:
         t1 = hextoint(a)
-        t2 = str(t1)
+        if t1<10:
+            
+            t2 = '0' + str(t1)
+        else:
+            t2 = str(t1)
+        
         str1 = str1+t2
     return str1
     
@@ -19,7 +24,7 @@ def hextoint(a):
     return a
 
 
-# a = b'\x00:d\x01\xc3\x11"3D\x05\x01WSBA SQ\x18\x04\x02WSBA Sh6\x04\x03WSBA T\x16g\x04\x06WSBA T\x07\x17\x04\x07WSBA SP\x91\x04'
+a = b'\x00:d\x01\xc1\x11"3D\x05\x01WSBA Sh6\x04\x02WSBA T\x07\x17\x04\x03WSBA T\x16g\x04\x05WSBA SQ\x18\x04\x06WSBA SP\x91\x04'
 
 # 剩余充电宝个数
 # num= a[9]
@@ -48,7 +53,7 @@ def getpbdata(a):
             SN1 = pb[1:5].decode('utf-8')
             
             # 充电宝ID数字部分
-            SN2 = hexlisttostr(pb[5:8])
+            SN2 = hexlisttostr(pb[5:9])
             # 拼接充电宝ID再添加进pbdata
             pbdata.append(SN1+SN2)
             # pbdata.append(pb[1:4])
@@ -71,5 +76,5 @@ def getpbdata(a):
     return pblist
 
 
-
-# print(pblist)
+b = getpbdata(a)
+print(b)

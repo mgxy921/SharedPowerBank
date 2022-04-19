@@ -1,3 +1,5 @@
+import os
+import sys
 import threading
 import Woshi
 
@@ -31,7 +33,8 @@ class Controler(threading.Thread):
                     continue
                 
                 if comm[0] == 'exit':
-                    exit()
+                    os._exit(0)
+                    # sys.exit(0)
                 
                 # 查询已连接设备数据
                 elif comm[0] == 'cabinetlist' :
@@ -62,7 +65,7 @@ class Controler(threading.Thread):
                         print('cabinet not found')
                     
                 # 0x64 查询机柜库存
-                elif comm[0] == 'select' and comm[1] == 'cabinet':
+                elif comm[0] == 'select' and len(comm) == 2:
                     
                     # 查询有没有这个机柜
                     SN = comm[1].encode()
@@ -224,7 +227,8 @@ class Controler(threading.Thread):
                 
                 #print(command)
                 print(command)
-                Woshi.CommandList.append(command)
+                if len(command) !=0:
+                    Woshi.CommandList.append(command)
                 
             except:
                 print('输入错误 2')

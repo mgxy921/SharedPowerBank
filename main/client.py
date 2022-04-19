@@ -16,7 +16,7 @@ while True:
                     print('loginning')
                     while True:
                         
-                        time.sleep(3)
+                        time.sleep(30)
                         try:
                             clientsocket.send(ping)
                             print('ping')

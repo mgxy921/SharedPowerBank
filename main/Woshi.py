@@ -20,17 +20,6 @@ def _init():
     CommandList = []
         
     #检测ip是否合法
-    def check_ip(ipAddr):
-
-        compile_ip=re.compile('^(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|[1-9])\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|\d)\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|\d)\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|\d)$')
-
-        if compile_ip.match(ipAddr):
-            
-            return True
-
-        else:
-
-            return False
 
 def check_ip(ipAddr):
 
@@ -54,7 +43,12 @@ def getpbdata(a):
         str1=''
         for a in hexlist:
             t1 = hextoint(a)
-            t2 = str(t1)
+            if t1<10:
+                
+                t2 = '0' + str(t1)
+            else:
+                t2 = str(t1)
+            
             str1 = str1+t2
         return str1
     
@@ -85,7 +79,7 @@ def getpbdata(a):
             SN1 = pb[1:5].decode('utf-8')
             
             # 充电宝ID数字部分
-            SN2 = hexlisttostr(pb[5:8])
+            SN2 = hexlisttostr(pb[5:9])
             # 拼接充电宝ID再添加进pbdata
             pbdata.append(SN1+SN2)
             # pbdata.append(pb[1:4])

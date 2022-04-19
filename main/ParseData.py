@@ -5,7 +5,7 @@ import Woshi
 def ParseData(self,data,conn,addr,SN):
     
     command = []
-    print('解析命令')
+    # print('解析命令')
     if len(data) == 0:
         return '',''
     

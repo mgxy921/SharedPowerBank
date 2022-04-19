@@ -19,7 +19,7 @@ def ExecuteCommand(conn):
     
     # 初始化要执行的命令
     command = b''
-    print('执行命令')
+    # print('执行命令')
     # print(Woshi.CommandList)
     if len(Woshi.CommandList) == 0:
         # print('commandlist lenth is 0')
