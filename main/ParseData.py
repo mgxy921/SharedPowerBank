@@ -98,8 +98,8 @@ def ParseData(self,data,conn,addr,SN):
         # 返回归还结果 归还成功或失败
         print('Parse还充电宝及响应')
         
-        
-        command = [SN.encode(),0,b'\x66',data[9]]
+        # bytes.decode bytes -> str
+        command = [SN.decode('utf-8'),0,b'\x66',data[9]]
         
         Woshi.CommandList.append(command)
         

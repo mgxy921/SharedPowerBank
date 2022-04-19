@@ -123,7 +123,7 @@ def ExecuteCommand(conn):
             # 有效数据的字节异或
             CheckSum = b'\x00'
             
-            
+            slot = b''
             slot = bytes([comm[3]])
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + slot
             
@@ -140,6 +140,7 @@ def ExecuteCommand(conn):
             CheckSum = b'\x01'
             
             # 槽位
+            slot = b''
             Slot = bytes([comm[3]])
             
             Result = b'\x01'

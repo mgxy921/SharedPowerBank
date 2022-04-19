@@ -18,7 +18,7 @@ class Controler(threading.Thread):
             try:
                 instr = input()
             except:
-                print('输入错误')
+                
                 continue
             
             # comm是用空格分割好的命令

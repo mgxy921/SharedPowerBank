@@ -2,7 +2,7 @@ import Woshi
 
 
 # 执行命令
-def ExecuteCommand(writer):
+async def ExecuteCommand(writer):
     
     # 计算异或校验
     def getCheckSum(a):
@@ -126,7 +126,7 @@ def ExecuteCommand(writer):
             # 有效数据的字节异或
             CheckSum = b'\x00'
             
-            
+            slot = b''
             slot = bytes([comm[3]])
             command = b'\x00' + PacketLen + comm[2] + VSN + CheckSum + Token + slot
             
@@ -143,6 +143,7 @@ def ExecuteCommand(writer):
             CheckSum = b'\x01'
             
             # 槽位
+            slot = b''
             Slot = bytes([comm[3]])
             
             Result = b'\x01'
@@ -254,6 +255,7 @@ def ExecuteCommand(writer):
         print('发送的报文：',command)
         # 发送命令
         writer.write(command)
+        await writer.drain()
         # 命令执行完要删除此命令
         Woshi.CommandList.remove(comm)
         

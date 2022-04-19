@@ -2,7 +2,7 @@ import Woshi
 
 
     
-def ParseData(data,writer,addr,SN):
+async def ParseData(data,writer,addr,SN):
     
     command = []
     # print('解析命令')
@@ -27,7 +27,7 @@ def ParseData(data,writer,addr,SN):
             # 要求机柜返回机柜库存数据
             writer.write(Woshi.selectCabinet)
             #print('登录后查询机柜库存')
-            
+            await writer.drain()
             return data[2],SN
             
         except:
@@ -44,6 +44,7 @@ def ParseData(data,writer,addr,SN):
         
         try:
             writer.write(data)
+            await writer.drain()
             print('发送心跳包,地址:',addr[0])
             return data[2],'success'
         except:

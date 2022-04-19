@@ -41,15 +41,25 @@ async def handle_echo(reader, writer):
     
     
     while True:
+        
+        # comm , Emessage = await ExecuteCommand2.ExecuteCommand(writer)
+        
+        task1 = asyncio.create_task(ExecuteCommand2.ExecuteCommand(writer))
         try:
-            reader_data = await reader.read(1024)
-            
+            task2 = asyncio.create_task(reader.read(1024))
         except:
             print('连接断开:',addr)
+        
+        
+        # try:
+        #     reader_data = await reader.read(1024)
+            
+        # except:
+        #     print('连接断开:',addr)
         # message = data.decode()
         # addr = writer.get_extra_info('peername')
-        
-        comm , Emessage = ExecuteCommand2.ExecuteCommand(writer)
+        comm , Emessage = await task1
+        reader_data = await task2
         
         # print('addr:',addr)
         
@@ -59,7 +69,9 @@ async def handle_echo(reader, writer):
         else:
             # print(reader_data)
             # print(hex(reader_data[2]))
-            comm , Pmessage = ParseData2.ParseData(reader_data,writer,addr,SN)
+            task3 = asyncio.create_task(ParseData2.ParseData(reader_data,writer,addr,SN))
+            comm , Pmessage = await task3
+            # comm , Pmessage = await ParseData2.ParseData(reader_data,writer,addr,SN)
             # 取出机柜库存信息
             if comm == 0x64:
                 powerbankList = Pmessage
@@ -112,18 +124,5 @@ async def main():
             await server.serve_forever()
 
 
-if __name__ == '__main__':
-    Woshi._init()
-    
-    threadTest = Controler.Controler(1,'Thread-1',1)
-    threadTest.start()
-    print('启动中')
-    while True:
-        
-        try:
-            asyncio.run(main())
-        except:
-            print('服务器启动失败')
-            time.sleep(5)
-            continue
+
             
