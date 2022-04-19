@@ -15,7 +15,11 @@ class Controler(threading.Thread):
     def run(self):
         
         while True:
-            instr = input()
+            try:
+                instr = input()
+            except:
+                print('输入错误')
+                continue
             
             # comm是用空格分割好的命令
             comm = list(instr.split())

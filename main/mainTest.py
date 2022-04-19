@@ -3,7 +3,8 @@ import time
 import Woshi
 import MyServerTest
 import Controler
-
+import asyncio
+import threading
     
     
 if __name__ == '__main__':
@@ -20,19 +21,11 @@ if __name__ == '__main__':
     threadTest.start()
     print('启动中')
     
-    while True:
-        
-        try:
-        # 第一步
-        #实例化server对象，传入本机ip，以及监听的端口号，还有新建的继承socketserver模块下的BaseRequestHandler类
-            server = socketserver.ThreadingTCPServer(('0.0.0.0',9233),MyServerTest.MyServer)  
-        #激活服务端
-            server.serve_forever()
-            print('启动成功')
-        except:
-            print('连接中断')
-            time.sleep(5)
-            continue
+
+    loop = asyncio.get_event_loop()
+    tasks = [MyServerTest.MyServer('0.0.0.0',9233)]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
         
 
 

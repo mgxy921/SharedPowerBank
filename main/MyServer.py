@@ -37,10 +37,12 @@ class MyServer(socketserver.BaseRequestHandler):
         
         conn = self.request
         addr = self.client_address
-        def refresh(self):
-            self.CabinetData = [self.SN,self.addr[0],self.ICCID,self.network,self.powerbankList,self.volume,self.serveraddr]
         
-        refresh()
+        serveraddr=()
+        
+        CabinetData = [SN,addr[0],ICCID,network,powerbankList,volume,serveraddr]
+        
+        
         
         while True:
             
@@ -79,10 +81,13 @@ class MyServer(socketserver.BaseRequestHandler):
                     elif comm == 0x77:
                         volume = Pmessage
                         
+                    elif comm == 0x6A:
+                        serveraddr = Pmessage
+                        
                     # 更新机柜数据
-                    refresh()
+                    CabinetData = [SN,addr[0],ICCID,network,powerbankList,volume,serveraddr]
                     # 把机柜数据存到全局变量
-                    Woshi.CabinetList = { self.CabinetData[0] : self.CabinetData[1:]}
+                    Woshi.CabinetList = { CabinetData[0] : CabinetData[1:]}
                 
             except:
                 # print('连接断开:',addr)

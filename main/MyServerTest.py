@@ -42,10 +42,10 @@ class MyServer(socketserver.BaseRequestHandler):
         conn = self.request
         addr = self.client_address
         
-        def refresh(self):
-            self.CabinetData = [self.SN,self.addr[0],self.ICCID,self.network,self.powerbankList,self.volume,self.serveraddr]
         
-        refresh()
+        CabinetData = [SN,addr[0],ICCID,network,powerbankList,volume,serveraddr]
+        
+        
         
         while True:
             
