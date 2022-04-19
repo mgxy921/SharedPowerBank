@@ -45,10 +45,7 @@ async def handle_echo(reader, writer):
         # comm , Emessage = await ExecuteCommand2.ExecuteCommand(writer)
         
         task1 = asyncio.create_task(ExecuteCommand2.ExecuteCommand(writer))
-        try:
-            task2 = asyncio.create_task(reader.read(1024))
-        except:
-            print('连接断开:',addr)
+        task2 = asyncio.create_task(ParseData2.ParseData(reader,writer,SN))
         
         
         # try:
@@ -58,20 +55,22 @@ async def handle_echo(reader, writer):
         #     print('连接断开:',addr)
         # message = data.decode()
         # addr = writer.get_extra_info('peername')
-        comm , Emessage = await task1
-        reader_data = await task2
+        
+        Ecomm , Emessage = await task1
+        comm , Pmessage = await task2
         
         # print('addr:',addr)
         
-        if not reader_data:
+        if comm == 0:
             break
         
         else:
             # print(reader_data)
             # print(hex(reader_data[2]))
-            task3 = asyncio.create_task(ParseData2.ParseData(reader_data,writer,addr,SN))
-            comm , Pmessage = await task3
+            # task3 = asyncio.create_task(ParseData2.ParseData(reader,writer,SN))
+            # comm , Pmessage = await task3
             # comm , Pmessage = await ParseData2.ParseData(reader_data,writer,addr,SN)
+            
             # 取出机柜库存信息
             if comm == 0x64:
                 powerbankList = Pmessage

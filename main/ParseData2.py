@@ -2,12 +2,17 @@ import Woshi
 
 
     
-async def ParseData(data,writer,addr,SN):
+async def ParseData(reader,writer,SN):
+    try:
+        data = await reader.read(1024)
+    except:
+        return 0,'error'
     
+    addr = writer.get_extra_info('peername')
     command = []
     # print('解析命令')
     if len(data) == 0:
-        return '',''
+        return 0,'data is null'
     
     # 备注：带*的命令在老机柜不支持，
     # 2019.4月份出去的新机柜支持，为增强型维护用途，不应高频率使用。
@@ -51,18 +56,19 @@ async def ParseData(data,writer,addr,SN):
             # print('发送心跳包失败，地址:'+str(addr[0]))
             return data[2],'error'
         
-    # 存储机柜软件版本号
+    # 查询机柜软件版本号
     elif data[2] == 0x62:
         
         
         # 存储机柜软件版本号
         print('查询机柜软件版本号及响应')
+        return data[2],data[9:]
         
-    # 存储机柜服务器地址
+    # 机柜 -> 服务器 设置服务器地址成功
     elif data[2] == 0x63:
         # 存储机柜服务器地址
         print('响应设置机柜服务器地址')
-        
+        return data[2],'success'
         
     # 解析机柜发送给服务器的库存数据
     elif data[2] == 0x64:
