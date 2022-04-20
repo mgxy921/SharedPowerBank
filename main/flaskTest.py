@@ -70,3 +70,4 @@ def api_SN():
 def flaskRUN():
     app.debug = False # 设置调试模式，生产模式的时候要关掉debug
     app.run()
+    

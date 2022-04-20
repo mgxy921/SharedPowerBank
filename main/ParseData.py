@@ -191,7 +191,9 @@ def ParseData(self,data,conn,addr,SN):
         print('*查询机柜网络信息')
         print(data)
         
-        network = data[9:]
+        network[0] = data[9]
+        network[1] = data[10]
+        network[2] = data[11]
         
         return data[2],network
     
