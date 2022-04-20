@@ -26,7 +26,6 @@ def ParseData(self,data,conn,addr,SN):
             
             # 要求机柜返回机柜库存数据
             conn.send(Woshi.selectCabinet)
-            #print('登录后查询机柜库存')
             
             # 查询ICCID
             conn.send(Woshi.selectICCID)
@@ -36,6 +35,7 @@ def ParseData(self,data,conn,addr,SN):
             
             # 查询机柜音量
             conn.send(Woshi.volume)
+            
             # 查询机柜网络信息
             conn.send(Woshi.network)
             
@@ -56,6 +56,8 @@ def ParseData(self,data,conn,addr,SN):
         try:
             conn.send(data)
             print('发送心跳包,地址:',addr[0])
+            # 要求机柜返回机柜库存数据
+            conn.send(Woshi.selectCabinet)
             return data[2],'success'
         except:
             # print('发送心跳包失败，地址:'+str(addr[0]))
