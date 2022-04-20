@@ -28,6 +28,17 @@ def ParseData(self,data,conn,addr,SN):
             conn.send(Woshi.selectCabinet)
             #print('登录后查询机柜库存')
             
+            # 查询ICCID
+            conn.send(Woshi.selectICCID)
+            
+            # 查询服务器地址
+            conn.send(Woshi.serveraddr)
+            
+            # 查询机柜音量
+            conn.send(Woshi.volume)
+            # 查询机柜网络信息
+            conn.send(Woshi.network)
+            
             return data[2],SN
             
         except:

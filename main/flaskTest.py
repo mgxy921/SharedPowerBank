@@ -40,14 +40,14 @@ import Woshi
 
 
 app = Flask(__name__)
-@app.route('/CabinetJSON', methods=['GET'])
-def api_SN():
-    if 'sn' in request.args:
-        SN = request.args['sn']
-        print(SN)
-    else:
-        return 'Error: 没有SN字段，请提供一个SN'
-
+@app.route('/scan/shark/battery/<SN>', methods=['GET'])
+def api_SN(SN):
+    # if 'sn' in request.args:
+    #     SN = request.args['sn']
+    #     print(SN)
+    # else:
+    #     return 'Error: 没有SN字段，请提供一个SN'
+    print(SN)
     SNb = SN.encode()
     if SNb in Woshi.CabinetList:
         results = Woshi.CabinetList[SNb]
