@@ -33,30 +33,33 @@ def check_ip(ipAddr):
 
         return False
 
+# 有个大聪明把16进制数字当成10进制发过来了，要想办法把它转换成10进制，再转换成字符串
+def hexlisttostr(hexlist):
+    
+    str1=''
+    for a in hexlist:
+        t1 = hextoint(a)
+        if t1<10:
+            
+            t2 = '0' + str(t1)
+        else:
+            t2 = str(t1)
+        
+        str1 = str1+t2
+    return str1
+
+# 假16进制转换成10进制
+def hextoint(a):
+    if int(a)>=16:
+        a = a - 6*int(a%256/16)
+    return a
+
+
 # 解析 0x64 命令：查询机柜库存
 def getpbdata(a):
     
     
-    # 有个大聪明把16进制数字当成10进制发过来了，要想办法把它转换成10进制，再转换成字符串
-    def hexlisttostr(hexlist):
-        
-        str1=''
-        for a in hexlist:
-            t1 = hextoint(a)
-            if t1<10:
-                
-                t2 = '0' + str(t1)
-            else:
-                t2 = str(t1)
-            
-            str1 = str1+t2
-        return str1
-    
-    # 假16进制转换成10进制
-    def hextoint(a):
-        if int(a)>=16:
-            a = a - 6*int(a%256/16)
-        return a
+
     
     # b 充电宝数据 从第11位到结束
     b = a[10:]

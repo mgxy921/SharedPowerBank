@@ -41,7 +41,7 @@ import Woshi
 
 app = Flask(__name__)
 @app.route('/scan/shark/battery/<SN>', methods=['GET'])
-def api_SN(SN):
+def selectCabinet(SN):
     # if 'sn' in request.args:
     #     SN = request.args['sn']
     #     print(SN)
@@ -65,6 +65,40 @@ def api_SN(SN):
         return jsonify(CabinetJSON)
     else:
         return 'Error: 没有找到SN为' + SN + '的机柜'
+    
+@app.route('/scan/shark/battery/setServerAddr', methods=['GET'])
+def setServerAddr(SN):
+    return ''
+    
+@app.route('/scan/shark/battery/selectStock', methods=['GET'])
+def selectStock(SN):
+    return ''
+@app.route('/scan/shark/battery/borrowPowerBank', methods=['GET'])
+def borrowPowerBank(SN):
+    return ''
+@app.route('/scan/shark/battery/rebootCabinet', methods=['GET'])
+def rebootCabinet(SN):
+    return ''
+@app.route('/scan/shark/battery/selectICCID', methods=['GET'])
+def selectICCID(SN):
+    return ''
+@app.route('/scan/shark/battery/selectServerAddr', methods=['GET'])
+def selectServerAddr(SN):
+    return ''
+@app.route('/scan/shark/battery/ejectPowerBank', methods=['GET'])
+def ejectPowerBank(SN):
+    return ''
+@app.route('/scan/shark/battery/getVolume', methods=['GET'])
+def getVolume(SN):
+    return ''
+@app.route('/scan/shark/battery/setVolume', methods=['GET'])
+def setVolume(SN):
+    return ''
+@app.route('/scan/shark/battery/network', methods=['GET'])
+def network(SN):
+    return ''
+
+    
 
 
 def flaskRUN():

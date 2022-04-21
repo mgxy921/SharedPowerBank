@@ -1,10 +1,8 @@
 import socketserver
 import time
 import Woshi
-import MyServer
+import MyServer2
 import Controler
-from flask import Flask
-from flask import request, jsonify
 import webAPI
     
 
@@ -33,7 +31,9 @@ if __name__ == '__main__':
         try:
         # 第一步
         #实例化server对象，传入本机ip，以及监听的端口号，还有新建的继承socketserver模块下的BaseRequestHandler类
-            server = socketserver.ThreadingTCPServer(('0.0.0.0',9233),MyServer.MyServer)  
+            server = socketserver.ThreadingTCPServer(('0.0.0.0',9233),MyServer2.MyServer)  
+            # 将重用端口设置成 True
+            server.allow_reuse_address = True
             
         #激活服务端
             server.serve_forever()

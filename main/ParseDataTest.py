@@ -1,27 +1,18 @@
-import socket
-from unittest import result
 import Woshi
-import time
+
 
     
-def ParseData(conn,addr,SN):
-    
-    
+async def ParseData(reader,writer,SN):
     try:
-        data = conn.recv(1024)
-    except socket.timeout:
-        return
-
-    if not data:
-        return 0,'no data'
-    print('接收机柜发送到的数据：',data)
-    print('命令字：',hex(data[2]))
+        data = await reader.read(1024)
+    except:
+        return 0,'error'
     
+    addr = writer.get_extra_info('peername')
     command = []
-    
-    # # print('解析命令')
-    # if len(data) == 0:
-    #     return '',''
+    # print('解析命令')
+    if len(data) == 0:
+        return 0,'data is null'
     
     # 备注：带*的命令在老机柜不支持，
     # 2019.4月份出去的新机柜支持，为增强型维护用途，不应高频率使用。
@@ -30,7 +21,7 @@ def ParseData(conn,addr,SN):
         try:
             
             # 向机柜发送已登录报文
-            conn.send(Woshi.login)
+            writer.write(Woshi.login)
             
             # 存储机柜SN号
             SN = data[17:33]
@@ -39,20 +30,9 @@ def ParseData(conn,addr,SN):
             Woshi.CabinetList[data[17:33]] = addr
             
             # 要求机柜返回机柜库存数据
-            conn.send(Woshi.selectCabinet)
-            
-            # 查询ICCID
-            conn.send(Woshi.selectICCID)
-            
-            # 查询服务器地址
-            conn.send(Woshi.serveraddr)
-            
-            # 查询机柜音量
-            conn.send(Woshi.volume)
-            
-            # 查询机柜网络信息
-            conn.send(Woshi.network)
-            
+            writer.write(Woshi.selectCabinet)
+            #print('登录后查询机柜库存')
+            await writer.drain()
             return data[2],SN
             
         except:
@@ -68,28 +48,27 @@ def ParseData(conn,addr,SN):
             return data[2],'SN not found'
         
         try:
-            conn.send(data)
+            writer.write(data)
+            await writer.drain()
             print('发送心跳包,地址:',addr[0])
-            # 要求机柜返回机柜库存数据
-            #conn.send(Woshi.selectCabinet)
-            
             return data[2],'success'
         except:
             # print('发送心跳包失败，地址:'+str(addr[0]))
             return data[2],'error'
         
-    # 存储机柜软件版本号
+    # 查询机柜软件版本号
     elif data[2] == 0x62:
         
         
         # 存储机柜软件版本号
         print('查询机柜软件版本号及响应')
+        return data[2],data[9:]
         
-    # 存储机柜服务器地址
+    # 机柜 -> 服务器 设置服务器地址成功
     elif data[2] == 0x63:
         # 存储机柜服务器地址
         print('响应设置机柜服务器地址')
-        
+        return data[2],'success'
         
     # 解析机柜发送给服务器的库存数据
     elif data[2] == 0x64:
@@ -114,22 +93,7 @@ def ParseData(conn,addr,SN):
         # 存储弹出的充电包ID 和借用结果
         print('借充电宝及响应')
         
-        Slot = data[9]
-        result = data[10]
-        #ID字母部分
-        ID1 = data[11:14]
-        #ID数字部分
-        ID2 = Woshi.hexlisttostr(data[15:18])
-        #拼接
-        TerminalID = ID1+ID2
-        
-        # 要求机柜返回机柜库存数据
-        conn.send(Woshi.selectCabinet)
-        
-        if result == 0:
-            return data[2],'error'
-        elif result ==1:
-            return data[2],TerminalID
+        return data[2],''
         
     # 还充电宝
     elif data[2] == 0x66:
@@ -138,11 +102,8 @@ def ParseData(conn,addr,SN):
         if not SN:
             return 0x66,'SN not found'
         
-        
         # 返回归还结果 归还成功或失败
         print('Parse还充电宝及响应')
-        # 要求机柜返回机柜库存数据
-        conn.send(Woshi.selectCabinet)
         
         # bytes.decode bytes -> str
         command = [SN.decode('utf-8'),0,b'\x66',data[9]]
@@ -156,18 +117,18 @@ def ParseData(conn,addr,SN):
         
         # 存储机柜已重启
         print('机柜已重启')
+        print(data)
         
-        
-        return data[2],''
+        #return data[2],''
         
     # 远程升级
     elif data[2] == 0x68:
         
         # 存储机柜已确认
         print('远程升级及响应')
+        print(data)
         
-        
-        return data[2],''
+        #return data[2],''
         
         
     #机柜ICCID
@@ -175,7 +136,7 @@ def ParseData(conn,addr,SN):
         
         # 存储机柜ICCID
         print('查询ICCID')
-        
+        print(data)
         iccid = str(data[10:-1])[4:-1]
         print(iccid)
         
@@ -186,7 +147,7 @@ def ParseData(conn,addr,SN):
         
         # 存储服务器地址
         print('*查询服务器地址及响应')
-        
+        print(data)
         AddressLen = data[10]
         PortLen = data[AddressLen + 12]
         
@@ -205,32 +166,29 @@ def ParseData(conn,addr,SN):
         
         # 确认已弹出充电包
         print('*强制弹出充电宝')
+        print(data)
         
-        # 要求机柜返回机柜库存数据
-        conn.send(Woshi.selectCabinet)
-        
-        
-        return data[2],data[9]
+        #return data[2],''
     
-    # 存储机柜音量
+    # 
     elif data[2] == 0x77:
         
-        
+        # 存储机柜音量
         print('*查询机柜语音播报音量')
-        
+        print(data)
         
         volume = data[9]
         
         return data[2],volume
     
-    # 确认机柜音量已改变
+    #
     elif data[2] == 0x70:
         
-        
+        # 确认机柜音量已改变
         print('*设置机柜语音播报音量')
+        print(data)
         
-        
-        return data[2],''
+        #return data[2],''
     
     # 存储机柜网络信息
     elif data[2] == 0x71:
@@ -238,11 +196,9 @@ def ParseData(conn,addr,SN):
         network = [0,0,0]
         # 存储机柜网络信息
         print('*查询机柜网络信息')
+        print(data)
         
-        
-        network[0] = data[9]
-        network[1] = data[10]
-        network[2] = data[11]
+        network = data[9:]
         
         return data[2],network
     
