@@ -85,8 +85,7 @@ async def ExecuteCommand(writer):
             # 命令长度
             PacketLen = b'\x07'
             
-            # 有效数据的字节异或
-            CheckSum = b'\x00'
+            
             
             # str.encode str -> bytes
             Address = comm[3].encode('utf-8')
@@ -95,9 +94,12 @@ async def ExecuteCommand(writer):
             Port = comm[4].encode('utf-8')
             PortLen = (len(Port)+1).to_bytes(2,byteorder='big')
 
-            Heartbeat = b'\x1e'
+            Heartbeat = comm[5]
 
             Payload = AddressLen + Address + b'\x00' + PortLen + Port + b'\x00' + Heartbeat
+            
+            #异或校验
+            CheckSum = getCheckSum(Payload).to_bytes(1,byteorder='big')
             
             command = PacketLen + comm[2] + VSN + CheckSum + Token + Payload
         

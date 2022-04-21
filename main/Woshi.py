@@ -32,6 +32,18 @@ def check_ip(ipAddr):
     else:
 
         return False
+    
+def check_port(port):
+    if port>=1 and port<=65535:
+        return True
+    else:
+        return False
+    
+def check_heartbeat(heartbeat):
+    if heartbeat>=1 and heartbeat<=255:
+        return True
+    else:
+        return False
 
 # 有个大聪明把16进制数字当成10进制发过来了，要想办法把它转换成10进制，再转换成字符串
 def hexlisttostr(hexlist):
@@ -113,12 +125,15 @@ selectCabinet=b'\x00\x07\x64\x01\x00\x11\x22\x33\x44'
 
 # 还充电宝，服务器固定发送给机柜的上行报文
 #returnpb= b'\x00\x09\x66\x01\x01\x11\x22\x33\x44'
-# 查询
+# 查询ICCID
 selectICCID = b'\x00\x07i\x01\x01\x11"3D'
-
+# 查询服务器地址
 serveraddr = b'\x00\x07j\x01\x01\x11"3D'
+
 #borrowpb =b'\x00\x07\x66\x01\x00\x11\x22\x33\x44'
+
 volume = b'\x00\x08w\x01\x00\x11"3D'
+# network = b'\x00\x07\x71\x01\x01\x11\x22\x33\x44'
 network = b'\x00\x07q\x01\x01\x11"3D'
 # 命令类型: 机柜登录及相应
 # 机柜-->服务器
@@ -178,4 +193,4 @@ SET_VOLUME = b'\x70'
 
 # 命令类型: 查询机柜网络信息
 # 服务器-->机柜
-SELECT_NETWORK = b'\x72'
+SELECT_NETWORK = b'\x71'
