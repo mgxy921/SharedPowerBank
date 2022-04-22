@@ -17,11 +17,6 @@ def ParseData(conn, addr, SN):
     print('命令字：', hex(data[2]))
 
     command = []
-
-    # # print('解析命令')
-    # if len(data) == 0:
-    #     return '',''
-    
     # 备注：带*的命令在老机柜不支持，
     # 2019.4月份出去的新机柜支持，为增强型维护用途，不应高频率使用。
     if data[2] == 0x60:
@@ -42,7 +37,7 @@ def ParseData(conn, addr, SN):
 
             # 查询ICCID
             conn.sendall(Woshi.selectICCID)
-
+            time.sleep(0.1)
             # 查询服务器地址
             conn.sendall(Woshi.serveraddr)
 
@@ -50,7 +45,8 @@ def ParseData(conn, addr, SN):
             conn.sendall(Woshi.volume)
 
             # 查询机柜网络信息
-            conn.sendall(Woshi.network)
+            command = [SNb, 0, b'\x71']
+            Woshi.CommandList.append(command)
 
             return data[2], SNb
 

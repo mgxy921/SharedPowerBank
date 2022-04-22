@@ -33,7 +33,7 @@ def ExecuteCommand(conn):
     for comm in Woshi.CommandList:
         command = b''
         # 一个线程对应一个机柜连接，如果有这个机柜的命令就执行
-        if len(comm) == 0:
+        if len(comm) <= 3:
             Woshi.CommandList.remove(comm)
             return 0,'commandlist lenth is 0'
         #if comm[0] == SN :
